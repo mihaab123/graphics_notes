@@ -63,12 +63,12 @@ android {
     }
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             manifestPlaceholders.appName = "Graphics Notes $flutterVersionName"
             setProperty("archivesBaseName", "Graphics Notes." + flutterVersionName)
         }
         debug {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             manifestPlaceholders.appName = "Graphics Notes $flutterVersionName"
             setProperty("archivesBaseName", "Graphics Notes." + flutterVersionName)
         }
