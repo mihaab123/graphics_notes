@@ -2,7 +2,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:graphics_notes/line_model.dart';
 
 class FlutterPaint extends StatefulWidget {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:graphics_notes/FlutterPaint.dart';
+import 'package:graphics_notes/app_constants.dart';
 import 'package:graphics_notes/note_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -76,7 +77,11 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
     return Scaffold(
       // resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: const Text('Create/Edit Note'),
+        title: Text(
+          'Create Note',
+          style: AppConstants().titleStyle,
+        ),
+        backgroundColor: AppConstants().primaryColor,
         actions: [
           IconButton(
             icon: const Icon(Icons.check),
@@ -95,77 +100,101 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextField(
-                controller: _titleController,
-                decoration: const InputDecoration(
-                  labelText: 'Title',
+      body: Container(
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg blue.png"),
+            fit: BoxFit.fill,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextField(
+                  controller: _titleController,
+                  decoration: InputDecoration(
+                      labelText: 'Title', labelStyle: AppConstants().textStyle),
                 ),
-              ),
-              const SizedBox(height: 16.0),
-              Row(
-                children: [
-                  const Text('Select color:'),
-                  const SizedBox(width: 8.0),
-                  GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Select a color'),
-                            content: SingleChildScrollView(
-                              child: ColorPicker(
-                                pickerColor: currentColor,
-                                onColorChanged: (Color color) {
-                                  setState(() {
-                                    currentColor = color;
-                                  });
-                                },
+                const SizedBox(height: 16.0),
+                Row(
+                  children: [
+                    Text(
+                      'Select color:',
+                      style: AppConstants().textStyle,
+                    ),
+                    const SizedBox(width: 8.0),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Select a color'),
+                              content: SingleChildScrollView(
+                                child: ColorPicker(
+                                  pickerColor: currentColor,
+                                  onColorChanged: (Color color) {
+                                    setState(() {
+                                      currentColor = color;
+                                    });
+                                  },
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    child: Container(
-                      width: 20,
-                      height: 20,
-                      color: currentColor,
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        width: 20,
+                        height: 20,
+                        color: currentColor,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Image.asset(
+                      "assets/images/marker.png",
+                      height: 30,
+                    ),
+                    Slider(
+                      value: currentLineWidth,
+                      min: 1,
+                      max: 10,
+                      activeColor: currentColor,
+                      inactiveColor: currentColor.withOpacity(0.5),
+                      onChanged: (newValue) {
+                        setState(() {
+                          currentLineWidth = newValue;
+                        });
+                      },
+                      label: 'Line Width: $currentLineWidth',
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16.0),
+                Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/images/note mini.png"),
+                      fit: BoxFit.fill,
                     ),
                   ),
-                ],
-              ),
-              Slider(
-                value: currentLineWidth,
-                min: 1,
-                max: 10,
-                onChanged: (newValue) {
-                  setState(() {
-                    currentLineWidth = newValue;
-                  });
-                },
-                label: 'Line Width: $currentLineWidth',
-              ),
-              const SizedBox(height: 16.0),
-              Container(
-                decoration: BoxDecoration(
-                    // borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.blue)),
-                height: 300,
-                width: 300,
-                child: FlutterPaint(
-                  key: _paintKey,
-                  lineColor: currentColor,
-                  lineWidth: currentLineWidth,
+                  height: 300,
+                  width: 300,
+                  child: FlutterPaint(
+                    key: _paintKey,
+                    lineColor: currentColor,
+                    lineWidth: currentLineWidth,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -1,4 +1,4 @@
-package com.example.graphics_notes
+package com.graphicnotes.writedown
 
 import io.flutter.embedding.android.FlutterActivity
 
